@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2026-05-30T18:00:00.000Z" agent="5.0" version="20.8.16" type="device">
+<mxfile host="Electron" modified="2026-05-30T18:25:00.000Z" agent="5.0" version="20.8.16" type="device">
   <diagram id="gcp-architecture" name="API Gateway Token Exchange">
     <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -7,36 +7,49 @@
         
         <!-- Background Grouping -->
         <mxCell id="gcp_boundary" value="Google Cloud Platform (jason-hsbc)" style="swimlane;whiteSpace=wrap;html=1;startSize=23;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="80" width="540" height="400" as="geometry" />
+          <mxGeometry x="240" y="40" width="560" height="480" as="geometry" />
         </mxCell>
 
         <!-- Components -->
         <mxCell id="user" value="External User&#10;(Browser)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="60" y="220" width="30" height="60" as="geometry" />
+          <mxGeometry x="60" y="240" width="30" height="60" as="geometry" />
         </mxCell>
 
         <mxCell id="gateway" value="API Gateway&#10;(secure-api)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="gcp_boundary">
-          <mxGeometry x="40" y="140" width="120" height="60" as="geometry" />
+          <mxGeometry x="40" y="180" width="120" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="sa" value="Service Account&#10;(gateway-invoker)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="gcp_boundary">
-          <mxGeometry x="180" y="40" width="120" height="60" as="geometry" />
+        <mxCell id="sa" value="Gateway SA&#10;(gateway-invoker)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="gcp_boundary">
+          <mxGeometry x="180" y="60" width="120" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="cloudrun" value="Cloud Run (Web UI)&#10;(secure-backend)&#10;[No Public Access]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" vertex="1" parent="gcp_boundary">
-          <mxGeometry x="360" y="140" width="140" height="60" as="geometry" />
+        <mxCell id="cloudrun" value="Cloud Run (FastAPI)&#10;(secure-backend)&#10;[No Public Access]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" vertex="1" parent="gcp_boundary">
+          <mxGeometry x="360" y="180" width="140" height="60" as="geometry" />
         </mxCell>
 
-        <!-- CI/CD Flow -->
-        <mxCell id="github" value="GitHub Repo" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="40" y="380" width="80" height="100" as="geometry" />
+        <!-- WIF and CI/CD Group -->
+        <mxCell id="github" value="GitHub Repo&#10;(nvd11/gcp-apigw...)" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="30" y="410" width="120" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="github_action" value="GitHub Actions" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="220" y="440" width="120" height="40" as="geometry" />
         </mxCell>
 
-        <mxCell id="cicd" value="CI / CD Pipeline" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="gcp_boundary">
-          <mxGeometry x="370" y="300" width="120" height="60" as="geometry" />
+        <mxCell id="wif" value="WIF Pool&#10;(github-pool)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="gcp_boundary">
+          <mxGeometry x="140" y="380" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cicd_sa" value="Deploy SA&#10;(github-actions-sa)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="gcp_boundary">
+          <mxGeometry x="320" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ar" value="Artifact Registry&#10;(Docker Image)" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="gcp_boundary">
+          <mxGeometry x="400" y="280" width="120" height="50" as="geometry" />
         </mxCell>
 
         <!-- Connections -->
+        <!-- Request Flow -->
         <mxCell id="edge_user_gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="user" target="gateway">
           <mxGeometry relative="1" as="geometry" />
           <mxCell id="lbl_req1" value="1. HTTP Request&#10;(No Token)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_user_gw">
@@ -64,20 +77,48 @@
           </mxCell>
         </mxCell>
         
-        <mxCell id="edge_gh_cicd" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="github" target="cicd">
+        <!-- CI/CD Flow -->
+        <mxCell id="edge_gh_act" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="github" target="github_action">
           <mxGeometry relative="1" as="geometry" />
-          <mxCell id="lbl_gh" value="Push / Trigger" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_gh_cicd">
+          <mxCell id="lbl_gh1" value="Push trigger" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_gh_act">
             <mxGeometry x="0.1" y="2" relative="1" as="geometry">
-              <mxPoint x="-30" y="-12" as="offset" />
+              <mxPoint x="-10" y="-12" as="offset" />
             </mxGeometry>
           </mxCell>
         </mxCell>
 
-        <mxCell id="edge_cicd_cr" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="gcp_boundary" source="cicd" target="cloudrun">
+        <mxCell id="edge_act_wif" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="github_action" target="wif">
           <mxGeometry relative="1" as="geometry" />
-          <mxCell id="lbl_deploy" value="Build &amp; Deploy&#10;(Auth Required)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_cicd_cr">
+          <mxCell id="lbl_gh2" value="OIDC Auth" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_act_wif">
             <mxGeometry x="0.1" y="2" relative="1" as="geometry">
-              <mxPoint x="48" y="10" as="offset" />
+              <mxPoint x="10" y="-10" as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </mxCell>
+
+        <mxCell id="edge_wif_sa" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="gcp_boundary" source="wif" target="cicd_sa">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell id="lbl_wif" value="Impersonate" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_wif_sa">
+            <mxGeometry x="0.1" y="2" relative="1" as="geometry">
+              <mxPoint x="-8" y="-12" as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </mxCell>
+        
+        <mxCell id="edge_sa_ar" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="gcp_boundary" source="cicd_sa" target="ar">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell id="lbl_push" value="docker push" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_sa_ar">
+            <mxGeometry x="0.1" y="2" relative="1" as="geometry">
+              <mxPoint x="28" y="10" as="offset" />
+            </mxGeometry>
+          </mxCell>
+        </mxCell>
+        
+        <mxCell id="edge_sa_cr" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="gcp_boundary" source="cicd_sa" target="cloudrun">
+          <mxGeometry relative="1" as="geometry" />
+          <mxCell id="lbl_deploy2" value="gcloud run deploy" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_sa_cr">
+            <mxGeometry x="0.1" y="2" relative="1" as="geometry">
+              <mxPoint x="48" y="0" as="offset" />
             </mxGeometry>
           </mxCell>
         </mxCell>
