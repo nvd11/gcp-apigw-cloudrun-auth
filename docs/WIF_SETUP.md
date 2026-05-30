@@ -13,6 +13,12 @@
 
 请在您的终端中运行以下脚本（确保您已登录 `gcloud` 并且在 `jason-hsbc` 项目中拥有 Owner 或 Org Admin 权限）。
 
+### 第 0 步：启用必要的 GCP API
+为了确保 WIF 和后续资源能够正常创建与运行，必须首先在 GCP 项目中开启对应的底层 API 服务：
+```bash
+gcloud services enable iamcredentials.googleapis.com sts.googleapis.com run.googleapis.com artifactregistry.googleapis.com apigateway.googleapis.com servicemanagement.googleapis.com servicecontrol.googleapis.com
+```
+
 ### 第 1 步：定义环境变量
 如果您的 GitHub 仓库名称变了，请记得修改 `REPO` 变量。
 ```bash
