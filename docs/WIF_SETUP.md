@@ -82,3 +82,19 @@ echo "projects/$(gcloud projects describe $PROJECT_ID --format='value(projectNum
 
 **请将终端输出的字符串保存下来！** 它看起来应该类似这样：
 `projects/123456789012/locations/global/workloadIdentityPools/github-pool/providers/github-provider`
+
+---
+
+## 🛡️ 安全 FAQ (常见安全疑虑)
+
+很多习惯了传统 JSON 秘钥的开发者，在第一次接触 WIF 时通常会有以下疑问：
+
+### Q1：这串 Provider ID 字符串可以写死在开源的代码（比如 Github Actions YAML）里吗？泄露了有危险吗？
+**完全没有危险。**
+这串字符串（`projects/.../providers/...`）充其量只是 GCP 里的一个“门牌号”。黑客就算拿到了它，向 GCP 发起访问请求，GCP 也会要求出示由 `nvd11/gcp-apigw-cloudrun-auth` 仓库签发的有效 OIDC Token。黑客拿不出这个 Token，就会被直接拒绝。
+
+### Q2：如果 GitHub 运行时生成的临时 OIDC Token 被截获了怎么办？
+WIF 的绝妙之处就在于此。即使 OIDC Token 意外打印在日志中被截获，风险也极低，因为它有三重防御：
+1. **超短有效期**：该 Token 默认寿命仅为 1 小时，过期即作废。
+2. **定向受众 (Audience bound)**：Token 内部写死了只对当前的 `Provider ID` 有效，黑客无法拿着它去 GCP 的其他地方或者其他云平台撞库。
+3. **彻底抛弃物理秘钥**：与一旦泄露就可以被永久滥用的传统 JSON 秘钥相比，WIF 根本不存在物理存储的长期凭证，从根源上杜绝了秘钥托管泄露引发的巨额账单惨案。
