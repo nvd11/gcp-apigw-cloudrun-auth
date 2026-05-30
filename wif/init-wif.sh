@@ -30,7 +30,7 @@ echo "[Exec] Ensuring IAM roles for '${SERVICE_ACCOUNT}'..."
 for role in "roles/run.admin" "roles/artifactregistry.writer" "roles/iam.serviceAccountUser" "roles/apigateway.admin"; do
   gcloud projects add-iam-policy-binding $PROJECT_ID \
       --member="serviceAccount:${SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-      --role="$role" >/dev/null
+      --role="$role" --condition=None >/dev/null
 done
 
 # 3. Create WIF Pool
