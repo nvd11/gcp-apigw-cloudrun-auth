@@ -28,6 +28,9 @@
 为了在不破坏底层“禁止公网直连”安全红线的前提下，让无状态的浏览器安全访问内部服务，我们需要引入一位“代理人” —— **Google Cloud API Gateway**。
 
 ### 核心架构思路
+
+![Architecture Diagram](../images/architecture.png)
+
 与其让客户端自己去挠头搞 Token，不如让网关挡在前面代劳。
 1. 我们将 API Gateway 暴露在公网，作为唯一的入口。
 2. 给网关绑定一个专用的 Service Account（服务账号）。
