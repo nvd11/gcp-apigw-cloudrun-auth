@@ -1,0 +1,37 @@
+swagger: '2.0'
+info:
+  title: CR-WebUI API Gateway
+  description: Gateway to proxy external requests to internal Cloud Run with Identity Token
+  version: 1.0.0
+schemes:
+  - https
+paths:
+  /:
+    get:
+      summary: "Root Web UI"
+      operationId: "getRoot"
+      x-google-backend:
+        address: "https://cr-webui-7hq3m4pdya-nw.a.run.app"
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: "OK"
+  /**:
+    get:
+      summary: "Proxy GET requests (static files, API, etc.)"
+      operationId: "proxyGet"
+      x-google-backend:
+        address: "https://cr-webui-7hq3m4pdya-nw.a.run.app"
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: "OK"
+    post:
+      summary: "Proxy POST requests"
+      operationId: "proxyPost"
+      x-google-backend:
+        address: "https://cr-webui-7hq3m4pdya-nw.a.run.app"
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: "OK"
