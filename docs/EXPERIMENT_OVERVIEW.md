@@ -15,15 +15,15 @@
 本实验成功必须满足以下所有条件：
 
 ### 阶段一：Web UI 开发
-- [ ] **代码就绪**：成功在仓库中建立 Web UI 项目目录，包含完整的 UI 代码及用于容器化的 `Dockerfile`。
+- [x] **代码就绪**：成功在仓库中建立 Web UI 项目目录，包含完整的 UI 代码及用于容器化的 `Dockerfile`。
 
 ### 阶段二：CI/CD 自动化流水线
-- [ ] **流水线配置**：成功编写自动化流水线脚本（如 GitHub Actions 或 Cloud Build）。
-- [ ] **自动部署**：流水线能够自动将镜像构建并部署至 `europe-west2` 的 Cloud Run，且环境处于高度锁定状态（禁止 `allUsers`）。
+- [x] **流水线配置**：成功编写自动化流水线脚本（如 GitHub Actions 或 Cloud Build）。
+- [x] **自动部署**：流水线能够自动将镜像构建并部署至 `europe-west2` 的 Cloud Run，且环境处于高度锁定状态（禁止 `allUsers`）。
 
 ### 阶段三：API Gateway 整合与验证
-- [ ] **权限隔离**：成功创建专属 Service Account 并赋予 `roles/run.invoker` 角色，绑定至 API Gateway Config。
-- [ ] **网关部署**：在 `europe-west2` 成功部署 API Gateway 实例，并与后端 Cloud Run 完成路由映射。
-- [ ] **反向验证 (Negative Test)**：直接使用浏览器访问 Cloud Run 的原生 URL 时，系统必须拦截并返回 `403 Forbidden`。
-- [ ] **正向验证 (Positive Test)**：使用浏览器访问 API Gateway 暴露的 URL 时，在不提供任何 IAM 凭证的情况下，能成功渲染出 Web UI 界面（HTTP 200）。
-- [ ] **资产沉淀**：所有架构代码、部署脚本与网关规范（`openapi.yaml`）完整提交至本仓库。
+- [x] **权限隔离**：成功创建专属 Service Account 并赋予 `roles/run.invoker` 角色，绑定至 API Gateway Config。
+- [x] **网关部署**：在 `europe-west2` 成功部署 API Gateway 实例，并与后端 Cloud Run 完成路由映射。
+- [x] **反向验证 (Negative Test)**：直接使用浏览器访问 Cloud Run 的原生 URL 时，系统必须拦截并返回 `403 Forbidden`。
+- [x] **正向验证 (Positive Test)**：使用浏览器访问 API Gateway 暴露的 URL 时，在不提供任何 IAM 凭证的情况下，能成功渲染出 Web UI 界面（HTTP 200）。
+- [x] **资产沉淀**：所有架构代码、部署脚本与网关规范（`openapi.yaml`）完整提交至本仓库。
