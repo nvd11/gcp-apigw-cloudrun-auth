@@ -1,7 +1,0 @@
-steps:
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
-    entrypoint: 'bash'
-    args: ['wif/init-wif.sh']
-serviceAccount: 'projects/jason-hsbc/serviceAccounts/terraform@jason-hsbc.iam.gserviceaccount.com'
-options:
-  logging: CLOUD_LOGGING_ONLY
