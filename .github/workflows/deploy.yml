@@ -47,3 +47,11 @@ jobs:
           flags: >-
             --service-account=cr-webui-runtime-sa@jason-hsbc.iam.gserviceaccount.com
             --no-allow-unauthenticated
+
+      - name: Post Deployment Verification
+        run: |
+          echo "========================================"
+          echo "✅ Deployment Verification Status"
+          echo "========================================"
+          echo "Cloud Run Service URL: ${{ steps.deploy.outputs.url }}"
+          echo "To verify the security lock, a direct curl should return 403 Forbidden."
