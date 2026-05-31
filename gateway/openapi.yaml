@@ -1,35 +1,67 @@
+# ==============================================================================
+# GCP API Gateway OpenAPI Spec (Swagger 2.0)
+# 用于将外部流量代理到内部的 Cloud Run 服务，并在网关层自动附加 Identity Token。
+# ==============================================================================
 swagger: '2.0'
+
+# API 的基本信息，会显示在 GCP 控制台的 API 管理页面中
 info:
   title: CR-WebUI API Gateway
   description: Gateway to proxy external requests to internal Cloud Run with Identity Token
   version: 1.0.0
+
+# 强制要求客户端使用 HTTPS 访问网关，以确保外网通信的绝对安全
 schemes:
   - https
+
+# 定义 API 网关的路由分发规则
 paths:
+  # ---------------------------------------------------------
+  # 1. 根路径 (/) 路由配置
+  # 专门用于处理用户直接访问网关裸域名时的首页请求
+  # ---------------------------------------------------------
   /:
     get:
       summary: "Root Web UI"
-      operationId: "getRoot"
+      operationId: "getRoot" # OpenAPI 规范中的全局唯一标识符
+      
+      # [核心机制] x-google-backend 是 GCP API Gateway 的专有扩展插件
+      # 它负责将请求转发给后端，并自动使用关联的 Service Account 换取 Identity Token 注入 Header
       x-google-backend:
+        # address: 目标后端服务（处于锁死状态的 Cloud Run）的原生 URL
         address: "https://cr-webui-7hq3m4pdya-nw.a.run.app"
+        # path_translation: 指示网关如何拼接路径。
+        # APPEND_PATH_TO_ADDRESS 表示将客户端请求的路径追加到后端 address 上。
+        # 例如客户端请求网关的 /，则会原封不动转发到 Cloud Run 的 /
         path_translation: APPEND_PATH_TO_ADDRESS
       responses:
         '200':
           description: "OK"
+
+  # ---------------------------------------------------------
+  # 2. 通配符路径 (/**) 路由配置
+  # 这是一个 Catch-all (兜底) 路由，用于处理首页以外的所有后续请求。
+  # 如果不配这个，浏览器加载首页后请求 CSS/JS 等静态资源时都会报 404
+  # ---------------------------------------------------------
   /**:
+    # 拦截并代理所有对子路径的 GET 请求 (主要用于静态资源如图片、JS、CSS，或查询类的 API)
     get:
       summary: "Proxy GET requests (static files, API, etc.)"
       operationId: "proxyGet"
       x-google-backend:
         address: "https://cr-webui-7hq3m4pdya-nw.a.run.app"
+        # 例如：客户端请求网关的 /static/style.css，会被翻译并转发到 Cloud Run 的 /static/style.css
         path_translation: APPEND_PATH_TO_ADDRESS
       responses:
         '200':
           description: "OK"
+          
+    # 拦截并代理所有对子路径的 POST 请求 (主要用于表单提交、后端接口的数据交互)
     post:
       summary: "Proxy POST requests"
       operationId: "proxyPost"
       x-google-backend:
+        # POST 请求同样会被路由到目标 Cloud Run 服务，且保留原始的 Payload
         address: "https://cr-webui-7hq3m4pdya-nw.a.run.app"
         path_translation: APPEND_PATH_TO_ADDRESS
       responses:
