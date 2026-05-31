@@ -31,7 +31,7 @@
 
 ### 核心架构设计
 
-![Architecture Diagram](../images/architecture.png)
+![Architecture Diagram](https://cdn.jsdelivr.net/gh/nvd11/gcp-apigw-cloudrun-auth@main/images/architecture.png)
 
 通过引入 API Gateway，将 Token 签发逻辑由客户端后置至网关层：
 1. 将 API Gateway 暴露至公网，作为流量的统一入口。
@@ -112,7 +112,7 @@ paths:
 ```
 配置中的 `x-google-backend` 扩展是核心所在，它触发网关底层的 Token 获取机制并将请求重定向至目标 `address`。
 
-![GCP API Gateway Config](../images/gcp_gateway_config.png)
+![GCP API Gateway Config](https://cdn.jsdelivr.net/gh/nvd11/gcp-apigw-cloudrun-auth@main/images/gcp_gateway_config.png)
 *图：GCP 控制台中解析后的 OpenAPI 规范*
 
 ### 步骤四：部署 API Gateway 实例
@@ -143,7 +143,7 @@ gcloud api-gateway gateways create cr-webui-gw \
 
 部署完成后，网关将获得一个 `.gateway.dev` 后缀的公网入口。
 
-![GCP API Gateway List](../images/gcp_gateway_list.png)
+![GCP API Gateway List](https://cdn.jsdelivr.net/gh/nvd11/gcp-apigw-cloudrun-auth@main/images/gcp_gateway_list.png)
 *图：API Gateway 分配的默认域名*
 
 通过该网关 URL 访问服务，请求成功响应 HTTP 200。在后端的 HTTP Headers 审查中，可以看到网关自动注入的 JWT：
