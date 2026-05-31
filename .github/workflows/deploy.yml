@@ -34,7 +34,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           IMAGE_PATH="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-          docker build -t $IMAGE_PATH .
+          docker build -t $IMAGE_PATH ./app
           docker push $IMAGE_PATH
 
       - name: Deploy to Cloud Run
