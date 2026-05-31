@@ -116,6 +116,10 @@ paths:
 ```
 当网关解析到 `x-google-backend` 时，它的内置引擎就会知道：“哦，我需要去代劳换取 Token 了”。
 
+
+![GCP API Gateway Config](../images/gcp_gateway_config.png)
+*图：在 GCP 控制台的 API Config 页面，可以清晰地看到生效的 openapi.yaml 内容*
+
 ### 步骤四：唤醒网关 —— 自动化部署
 拿着写好的 YAML 文件和刚才建好的 SA，我们就可以正式唤醒网关了：
 
@@ -139,6 +143,10 @@ gcloud api-gateway gateways create cr-webui-gw \
 ```
 
 ---
+
+
+![GCP API Gateway List](../images/gcp_gateway_list.png)
+*图：成功部署后，在 GCP 控制台可以看到分配的 Gateway URL (gateway.dev)*
 
 ## 5. 效果验证：见证奇迹的时刻
 
