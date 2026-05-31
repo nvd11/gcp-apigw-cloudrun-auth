@@ -141,18 +141,26 @@ gcloud api-gateway gateways create cr-webui-gw \
 
 ## 5. 验证与抓包分析
 
-部署完成后，网关将获得一个 `.gateway.dev` 后缀的公网入口。
+部署完成后，网关将获得一个 `.gateway.dev` 后缀的公网入口。本实验的最终公网访问入口为：`https://cr-webui-gw-bn1ehv9s.nw.gateway.dev`。
 
 ![GCP API Gateway List](https://ghproxy.net/https://raw.githubusercontent.com/nvd11/gcp-apigw-cloudrun-auth/main/images/gcp_gateway_list.png)
 *图：API Gateway 分配的默认域名*
 
-通过该网关 URL 访问服务，请求成功响应 HTTP 200。在后端的 HTTP Headers 审查中，可以看到网关自动注入的 JWT：
-```text
-Authorization: Bearer eyJhbGciOiJSUzI...
-```
-解析该 JWT，其 `email` 字段的值即为 `gateway-invoker@my-project.iam.gserviceaccount.com`。
+### 5.1 鉴权与 Token 注入验证
 
-这验证了无状态外网请求在途经 API Gateway 时，已成功完成身份转换，底层穿透了 Cloud Run 的 IAM 安全策略限制。
+通过浏览器直接访问该网关 URL，请求成功响应 HTTP 200。在后端的 HTTP Headers 审查中（Token Inspector 页面），可以清晰地看到网关在底层自动换取并注入的 Identity Token：
+
+![Token Inspector](https://ghproxy.net/https://raw.githubusercontent.com/nvd11/gcp-apigw-cloudrun-auth/main/images/result_token_inspector.png)
+*图：后端成功接收到网关代发注入的 Bearer Token*
+
+解析这段长长的 JWT，其 `email` 字段的值确切地指向了我们绑定的 `gateway-invoker@my-project.iam.gserviceaccount.com`。这验证了外部无状态请求在途经 API Gateway 时，已成功完成身份转换，穿透了 Cloud Run 的 IAM 安全策略限制。
+
+### 5.2 子路径代理验证
+
+除了根路径，得益于 OpenAPI 规范中 `/**` 通配符路由与 `APPEND_PATH_TO_ADDRESS` 特性的配置，网关同样能完美代理后端的任意子路径（如 FastAPI 原生的 `/docs` 接口）及其关联的底层静态资源（JS/CSS）请求：
+
+![FastAPI Docs](https://ghproxy.net/https://raw.githubusercontent.com/nvd11/gcp-apigw-cloudrun-auth/main/images/result_fastapi_docs.png)
+*图：网关完美代理后端的 Swagger UI 及其静态资源*
 
 ## 6. 架构探讨与最佳实践
 
