@@ -36,7 +36,7 @@
           <mxGeometry x="220" y="440" width="120" height="40" as="geometry" />
         </mxCell>
 
-        <mxCell id="wif" value="WIF Pool&#10;(github-pool)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="gcp_boundary">
+        <mxCell id="wif" value="GitHub Secrets&#10;(JSON Key)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="gcp_boundary">
           <mxGeometry x="140" y="380" width="120" height="80" as="geometry" />
         </mxCell>
 
@@ -89,7 +89,7 @@
 
         <mxCell id="edge_act_wif" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="github_action" target="wif">
           <mxGeometry relative="1" as="geometry" />
-          <mxCell id="lbl_gh2" value="OIDC Auth" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_act_wif">
+          <mxCell id="lbl_gh2" value="Read Secret" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="edge_act_wif">
             <mxGeometry x="0.1" y="2" relative="1" as="geometry">
               <mxPoint x="10" y="-10" as="offset" />
             </mxGeometry>
