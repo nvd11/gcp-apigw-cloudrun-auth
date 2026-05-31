@@ -39,3 +39,18 @@
 
 ## 📖 详细文档
 关于本实验的演进过程和交付标准，请前往查看：[EXPERIMENT_OVERVIEW.md](docs/EXPERIMENT_OVERVIEW.md)
+
+## 🎯 实验成果展示 (Experiment Results)
+
+**最终网关公网访问入口**：`https://cr-webui-gw-bn1ehv9s.nw.gateway.dev`
+*(注：网关已开放公网访问，但后端的 Cloud Run 服务依旧保持严格的 `--no-allow-unauthenticated` 锁定状态)*
+
+### 1. 鉴权与 Token 注入验证 (Token Inspector)
+通过浏览器直接访问 API Gateway，网关在底层成功使用 `gateway-invoker` Service Account 换取了 Identity Token，并将其无缝注入到了 HTTP 请求头的 `Authorization` 字段中。Cloud Run 接收到合法 Token 后放行，成功渲染出页面：
+
+![Token Inspector](images/result_token_inspector.png)
+
+### 2. 子路径代理验证 (FastAPI Swagger UI)
+借助 `openapi.yaml` 中的 `/**` 通配符路由配置与 `APPEND_PATH_TO_ADDRESS` 特性，网关完美代理了 FastAPI 原生的 `/docs` 接口及其关联的静态资源请求：
+
+![FastAPI Docs](images/result_fastapi_docs.png)
